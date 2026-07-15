@@ -14,7 +14,7 @@ export default function DashboardLayout({
   return (
     <div className="flex min-h-[calc(100vh-4rem)]">
       <DashboardHeader/>
-      <section className="flex-1">{children}</section>
+      <section className="flex-1 min-h-0">{children}</section>
     </div>
   );
 }
