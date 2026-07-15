@@ -1,47 +1,39 @@
 "use client";
 
 import React, { useState } from "react";
-import { ArrowUp, Sparkles, User } from "lucide-react";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
+import { ArrowUp, Sparkles, User, Copy, Check } from "lucide-react";
 import axios from "axios";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 interface Message {
   role: "user" | "assistant";
   content: string;
 }
 
-function renderContent(text: string) {
-  const parts = text.split(/(```[\s\S]*?```)/g);
-  return parts.map((part, i) => {
-    if (part.startsWith("```") && part.endsWith("```")) {
-      const lines = part.slice(3, -3);
-      const firstNewline = lines.indexOf("\n");
-      const lang = firstNewline !== -1 ? lines.slice(0, firstNewline).trim() : "text";
-      const code = firstNewline !== -1 ? lines.slice(firstNewline + 1) : lines;
-      return (
-        <div key={i} className="my-3 rounded-xl overflow-hidden">
-          <div className="flex items-center justify-between px-4 py-2 bg-[#282c34] text-xs text-gray-400 border-b border-gray-700">
-            <span>{lang}</span>
-          </div>
-          <SyntaxHighlighter
-            language={lang}
-            style={oneDark}
-            customStyle={{ margin: 0, borderRadius: "0 0 0.75rem 0.75rem", fontSize: "0.875rem" }}
-          >
-            {code}
-          </SyntaxHighlighter>
-        </div>
-      );
-    }
-    return <span key={i}>{part}</span>;
-  });
+interface ParsedResponse {
+  summary: string;
+  code: string;
+  language: string;
 }
+
+// Parse the response to extract summary and code
+const parseResponse = (text: string): ParsedResponse => {
+  const summaryMatch = text.match(/Summary:\s*([\s\S]*?)(?=```|$)/);
+  const codeMatch = text.match(/```(\w*)\n([\s\S]*?)\n```/);
+
+  const summary = summaryMatch ? summaryMatch[1].trim() : text;
+  const code = codeMatch ? codeMatch[2].trim() : "";
+  const language = codeMatch ? codeMatch[1] || "javascript" : "javascript";
+
+  return { summary, code, language };
+};
 
 const Chat = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
 
   const handleSend = async () => {
     if (!input.trim() || isLoading) return;
@@ -51,7 +43,7 @@ const Chat = () => {
     setIsLoading(true);
 
     try {
-      const res = await axios.post("/api/chat", {
+      const res = await axios.post("/api/code", {
         messages: [...messages, userMsg].map((m) => ({
           role: m.role,
           content: m.content,
@@ -68,6 +60,12 @@ const Chat = () => {
     }
   };
 
+  const copyToClipboard = (text: string, index: number) => {
+    navigator.clipboard.writeText(text);
+    setCopiedIndex(index);
+    setTimeout(() => setCopiedIndex(null), 2000);
+  };
+
   return (
     <main className="flex h-full flex-col relative max-h-screen">
       <div className="flex-1 overflow-y-auto px-4 md:px-8 py-6">
@@ -80,12 +78,11 @@ const Chat = () => {
               How can I help you today?
             </h2>
             <p className="max-w-sm text-sm text-gray-500">
-              Ask me anything — from writing and analysis to coding and creative
-              ideas.
+              Ask me anything — from writing and analysis to coding and creative ideas.
             </p>
           </div>
         ) : (
-          <div className="mx-auto overflow-auto py-18 flex max-w-3xl flex-col gap-6">
+          <div className="mx-auto flex max-w-3xl flex-col gap-6">
             {messages.map((msg, i) => (
               <div
                 key={i}
@@ -98,15 +95,65 @@ const Chat = () => {
                     <Sparkles className="h-4 w-4 text-violet-600" />
                   </div>
                 )}
-                <div
-                  className={`max-w-[75%] rounded-2xl px-4 py-3 text-sm leading-relaxed whitespace-pre-wrap ${
-                    msg.role === "user"
-                      ? "bg-violet-600 text-white"
-                      : "bg-gray-100 text-gray-900"
-                  }`}
-                >
-                  {msg.role === "user" ? msg.content : renderContent(msg.content)}
-                </div>
+                {msg.role === "assistant" ? (
+                  <div className="max-w-[85%] flex flex-col gap-3">
+                    {(() => {
+                      const parsed = parseResponse(msg.content);
+                      return (
+                        <>
+                          {parsed.summary && parsed.code && (
+                            <>
+                              {/* Summary Section */}
+                              <div className="rounded-2xl bg-gray-100 px-4 py-3 text-sm leading-relaxed text-gray-900">
+                                {parsed.summary}
+                              </div>
+                              {/* Code Section */}
+                              <div className="rounded-2xl overflow-hidden bg-gray-900">
+                                <div className="flex items-center justify-between bg-gray-800 px-4 py-2">
+                                  <span className="text-xs font-semibold text-gray-400 uppercase">
+                                    {parsed.language}
+                                  </span>
+                                  <button
+                                    onClick={() => copyToClipboard(parsed.code, i)}
+                                    className="flex items-center gap-1.5 rounded px-2 py-1 text-xs text-gray-400 hover:bg-gray-700 transition-colors"
+                                  >
+                                    {copiedIndex === i ? (
+                                      <>
+                                        <Check className="h-4 w-4" />
+                                        Copied!
+                                      </>
+                                    ) : (
+                                      <>
+                                        <Copy className="h-4 w-4" />
+                                        Copy
+                                      </>
+                                    )}
+                                  </button>
+                                </div>
+                                <SyntaxHighlighter
+                                  language={parsed.language}
+                                  style={vscDarkPlus}
+                                  className="bg-gray-900! m-0! p-4!"
+                                  wrapLongLines
+                                >
+                                  {parsed.code}
+                                </SyntaxHighlighter>
+                              </div>
+                            </>
+                          ) || (
+                            <div className="rounded-2xl bg-gray-100 px-4 py-3 text-sm leading-relaxed text-gray-900">
+                              {msg.content}
+                            </div>
+                          )}
+                        </>
+                      );
+                    })()}
+                  </div>
+                ) : (
+                  <div className="max-w-[75%] rounded-2xl bg-violet-600 px-4 py-3 text-sm leading-relaxed text-white">
+                    {msg.content}
+                  </div>
+                )}
                 {msg.role === "user" && (
                   <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gray-200">
                     <User className="h-4 w-4 text-gray-600" />
@@ -132,7 +179,7 @@ const Chat = () => {
         )}
       </div>
 
-      <section className="absolute bottom-0 left-0 right-0 border-t border-gray-200 bg-white px-4 py-4 md:px-8">
+      <section className="border-t border-gray-200 bg-white px-4 py-4 md:px-8">
         <form
           onSubmit={(e) => {
             e.preventDefault();

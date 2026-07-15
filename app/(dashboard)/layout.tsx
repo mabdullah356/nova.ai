@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation";
 
 const navLinks = [
   { name: "Chat", link: "/chat", icon: <MessageSquareText className="h-4 w-4" /> },
+  { name: "Code", link: "/code", icon: <MessageSquareText className="h-4 w-4" /> },
   { name: "Image Generation", link: "/image-generation", icon: <ImagePlus className="h-4 w-4" /> },
   { name: "Video Generation", link: "/video-generation", icon: <Video className="h-4 w-4" /> },
   { name: "Slides", link: "/slides", icon: <PanelLeftOpen className="h-4 w-4" /> },
