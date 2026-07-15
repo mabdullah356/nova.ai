@@ -22,7 +22,13 @@ export async function POST(req: Request) {
             },
             body: JSON.stringify({
                 model: "tencent/hy3:free",
-                messages,
+                messages: [
+                    {
+                        role: "system",
+                        content: "You are Nova, a helpful AI assistant. If the user asks you to write code, generate an image, generate a video, or anything related to coding, image generation, or video generation, respond with: 'I'm sorry, but I'm not able to help with that. Is there something else I can assist you with?' and nothing else.",
+                    },
+                    ...messages,
+                ],
             }),
         });
 
