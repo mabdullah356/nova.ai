@@ -19,7 +19,7 @@ export default function DashboardShell({ children }: { children: React.ReactNode
   return (
     <div className="flex min-h-[calc(100vh-4rem)]">
       <header className="hidden md:flex md:w-72 md:flex-col md:items-center border-r border-zinc-200 bg-white py-6">
-        <Link href="/" className="mb-8 flex items-center justify-center">
+        <Link href="/home" className="mb-8 flex items-center justify-center">
           <Sparkles className="h-6 w-6 text-purple-600" />
           <span className="text-purple-800 text-md font-bold">nova.ai</span>
         </Link>

@@ -16,7 +16,7 @@ const Header = () => {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-gray-200 bg-white">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        <Link href="/" className="flex items-center gap-2 font-semibold text-black hover:text-violet-600 transition-colors">
+        <Link href="/home" className="flex items-center gap-2 font-semibold text-black hover:text-violet-600 transition-colors">
           <Sparkles className="h-5 w-5 text-violet-600" />
           <span className="text-lg tracking-tight">nova.ai</span>
         </Link>
@@ -37,7 +37,7 @@ const Header = () => {
 
         <div className="hidden items-center gap-2 md:flex">
           <Link
-            href="#"
+            href="/"
             className="ml-2 inline-flex h-8 items-center rounded-full bg-violet-600 px-4 text-sm font-medium text-white hover:bg-violet-700 transition-colors"
           >
             Get Started
@@ -70,7 +70,7 @@ const Header = () => {
           </nav>
           <div className="mt-3 flex flex-col gap-2">
             <Link
-              href="#"
+              href="/"
               onClick={() => setMobileOpen(false)}
               className="inline-flex h-9 items-center justify-center rounded-full bg-violet-600 px-4 text-sm font-medium text-white hover:bg-violet-700 transition-colors"
             >

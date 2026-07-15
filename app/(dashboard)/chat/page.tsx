@@ -12,10 +12,30 @@ const Chat = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
 
-  const handleSend = () => {
+  const handleSend = async () => {
     if (!input.trim()) return;
-    setMessages((prev) => [...prev, { role: "user", content: input }]);
+    const userMsg = { role: "user" as const, content: input };
+    setMessages((prev) => [...prev, userMsg]);
     setInput("");
+
+    try {
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          messages: [...messages, userMsg].map((m) => ({
+            role: m.role,
+            content: m.content,
+          })),
+        }),
+      });
+      const data = await res.json();
+      if (data.reply) {
+        setMessages((prev) => [...prev, { role: "assistant", content: data.reply }]);
+      }
+    } catch {
+      setMessages((prev) => [...prev, { role: "assistant", content: "Failed to get response." }]);
+    }
   };
 
   return (
