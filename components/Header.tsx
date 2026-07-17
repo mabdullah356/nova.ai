@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { Menu, X, Sparkles } from "lucide-react";
+import { Menu, X, Sparkles, LogOut, LayoutDashboard } from "lucide-react";
 import Link from "next/link";
+import { useSession, signOut } from "next-auth/react";
 
 const navLinks = [
   { label: "Features", href: "#features" },
@@ -12,6 +13,7 @@ const navLinks = [
 
 const Header = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { data: session } = useSession();
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-gray-200 bg-white/80 backdrop-blur-lg">
@@ -33,12 +35,31 @@ const Header = () => {
             ))}
           </nav>
           <div className="hidden items-center gap-2 md:flex">
-            <Link
-              href="/signup"
-              className="ml-2 inline-flex h-9 items-center rounded-full bg-purple-800 px-5 text-sm font-medium text-white hover:bg-purple-900 transition-colors"
-            >
-              Get Started
-            </Link>
+            {session ? (
+              <>
+                <Link
+                  href="/chat"
+                  className="inline-flex h-9 items-center gap-1.5 rounded-full border border-purple-800 px-5 text-sm font-medium text-purple-800 hover:bg-purple-50 transition-colors"
+                >
+                  <LayoutDashboard className="h-4 w-4" />
+                  Dashboard
+                </Link>
+                <button
+                  onClick={() => signOut({ callbackUrl: "/" })}
+                  className="inline-flex h-9 items-center gap-1.5 rounded-full bg-purple-800 px-5 text-sm font-medium text-white hover:bg-purple-900 transition-colors"
+                >
+                  <LogOut className="h-4 w-4" />
+                  Logout
+                </button>
+              </>
+            ) : (
+              <Link
+                href="/signup"
+                className="ml-2 inline-flex h-9 items-center rounded-full bg-purple-800 px-5 text-sm font-medium text-white hover:bg-purple-900 transition-colors"
+              >
+                Get Started
+              </Link>
+            )}
           </div>
         </section>
         <button
@@ -66,13 +87,36 @@ const Header = () => {
             ))}
           </nav>
           <div className="mt-3 flex flex-col gap-2">
-            <Link
-              href="/signup"
-              onClick={() => setMobileOpen(false)}
-              className="inline-flex h-9 items-center justify-center rounded-full bg-purple-800 px-4 text-sm font-medium text-white hover:bg-purple-900 transition-colors"
-            >
-              Get Started
-            </Link>
+            {session ? (
+              <>
+                <Link
+                  href="/chat"
+                  onClick={() => setMobileOpen(false)}
+                  className="inline-flex h-9 items-center justify-center gap-1.5 rounded-full border border-purple-800 px-4 text-sm font-medium text-purple-800 hover:bg-purple-50 transition-colors"
+                >
+                  <LayoutDashboard className="h-4 w-4" />
+                  Dashboard
+                </Link>
+                <button
+                  onClick={() => {
+                    setMobileOpen(false);
+                    signOut({ callbackUrl: "/" });
+                  }}
+                  className="inline-flex h-9 items-center justify-center gap-1.5 rounded-full bg-purple-800 px-4 text-sm font-medium text-white hover:bg-purple-900 transition-colors"
+                >
+                  <LogOut className="h-4 w-4" />
+                  Logout
+                </button>
+              </>
+            ) : (
+              <Link
+                href="/signup"
+                onClick={() => setMobileOpen(false)}
+                className="inline-flex h-9 items-center justify-center rounded-full bg-purple-800 px-4 text-sm font-medium text-white hover:bg-purple-900 transition-colors"
+              >
+                Get Started
+              </Link>
+            )}
           </div>
         </div>
       )}
