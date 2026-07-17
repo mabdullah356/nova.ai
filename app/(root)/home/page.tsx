@@ -449,18 +449,6 @@ export default function HomePage() {
           </motion.div>
         </div>
       </section>
-
-      <footer className="border-t border-gray-100 bg-white">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-10 sm:px-6 lg:px-8">
-          <div className="flex items-center gap-2 text-sm text-gray-400">
-            <Sparkles className="h-4 w-4 text-purple-800" />
-            nova.ai
-          </div>
-          <p className="text-sm text-gray-400">
-            &copy; {new Date().getFullYear()} nova.ai
-          </p>
-        </div>
-      </footer>
     </div>
   );
 }

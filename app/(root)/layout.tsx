@@ -1,4 +1,5 @@
 import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 
 export default function RootGroupLayout({
   children,
@@ -8,7 +9,8 @@ export default function RootGroupLayout({
   return (
     <>
       <Header />
-      {children}
+      <main className="flex-1">{children}</main>
+      <Footer />
     </>
   );
 }
