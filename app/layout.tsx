@@ -13,8 +13,19 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "nova.ai",
-  description: "A simple, fast, and free AI tool for generating chat responses , code , images,videos.",
+  title: {
+    default: "nova.ai — AI-Powered Chat, Code, Images, Video & Slides",
+    template: "%s | nova.ai",
+  },
+  description:
+    "One platform for AI-powered chat, code generation, image creation, video synthesis, and presentation design. Free to start, no credit card required.",
+  keywords: ["AI", "chat", "code generation", "image generation", "video generation", "slides", "nova.ai"],
+  openGraph: {
+    title: "nova.ai — AI-Powered Chat, Code, Images, Video & Slides",
+    description:
+      "One platform for AI-powered chat, code generation, image creation, video synthesis, and presentation design.",
+    type: "website",
+  },
 };
 
 export default function RootLayout({

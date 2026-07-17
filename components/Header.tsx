@@ -14,40 +14,37 @@ const Header = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-gray-200 bg-white">
+    <header className="sticky top-0 z-50 w-full border-b border-gray-200 bg-white/80 backdrop-blur-lg">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        <Link href="/home" className="flex items-center gap-2 font-semibold text-black hover:text-violet-600 transition-colors">
-          <Sparkles className="h-5 w-5 text-violet-600" />
+        <Link href="/home" className="flex items-center gap-2 font-semibold text-black hover:text-purple-800 transition-colors">
+          <Sparkles className="h-5 w-5 text-purple-800" />
           <span className="text-lg tracking-tight">nova.ai</span>
         </Link>
         <section className="flex items-center gap-4">
-
-       
-        <nav className="hidden items-center gap-1 md:flex">
-          {navLinks.map((link) => (
+          <nav className="hidden items-center gap-1 md:flex">
+            {navLinks.map((link) => (
+              <Link
+                key={link.label}
+                href={link.href}
+                className="rounded-md px-3 py-2 text-sm font-medium text-black hover:bg-gray-100 hover:text-purple-800 transition-colors"
+              >
+                {link.label}
+              </Link>
+            ))}
+          </nav>
+          <div className="hidden items-center gap-2 md:flex">
             <Link
-              key={link.label}
-              href={link.href}
-              className="rounded-md px-3 py-2 text-sm font-medium text-black hover:bg-gray-100 hover:text-violet-600 transition-colors"
+              href="/signup"
+              className="ml-2 inline-flex h-9 items-center rounded-full bg-purple-800 px-5 text-sm font-medium text-white hover:bg-purple-900 transition-colors"
             >
-              {link.label}
+              Get Started
             </Link>
-          ))}
-        </nav>
-
-        <div className="hidden items-center gap-2 md:flex">
-          <Link
-            href="/"
-            className="ml-2 inline-flex h-8 items-center rounded-full bg-violet-600 px-4 text-sm font-medium text-white hover:bg-violet-700 transition-colors"
-          >
-            Get Started
-          </Link>
-        </div>
-           </section>
+          </div>
+        </section>
         <button
           type="button"
           onClick={() => setMobileOpen(!mobileOpen)}
-          className="flex h-8 w-8 items-center justify-center rounded-md text-black hover:bg-gray-100 hover:text-violet-600 transition-colors md:hidden"
+          className="flex h-8 w-8 items-center justify-center rounded-md text-black hover:bg-gray-100 hover:text-purple-800 transition-colors md:hidden"
           aria-label="Toggle menu"
         >
           {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -62,7 +59,7 @@ const Header = () => {
                 key={link.label}
                 href={link.href}
                 onClick={() => setMobileOpen(false)}
-                className="rounded-md px-3 py-2 text-sm font-medium text-black hover:bg-gray-100 hover:text-violet-600 transition-colors"
+                className="rounded-md px-3 py-2 text-sm font-medium text-black hover:bg-gray-100 hover:text-purple-800 transition-colors"
               >
                 {link.label}
               </Link>
@@ -70,9 +67,9 @@ const Header = () => {
           </nav>
           <div className="mt-3 flex flex-col gap-2">
             <Link
-              href="/"
+              href="/signup"
               onClick={() => setMobileOpen(false)}
-              className="inline-flex h-9 items-center justify-center rounded-full bg-violet-600 px-4 text-sm font-medium text-white hover:bg-violet-700 transition-colors"
+              className="inline-flex h-9 items-center justify-center rounded-full bg-purple-800 px-4 text-sm font-medium text-white hover:bg-purple-900 transition-colors"
             >
               Get Started
             </Link>
