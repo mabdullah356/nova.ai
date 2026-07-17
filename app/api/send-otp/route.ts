@@ -36,7 +36,7 @@ export async function POST(req: NextRequest) {
     });
 
     const { data, error } = await resend.emails.send({
-      from: "nova.ai <onboarding@resend.dev>",
+      from: process.env.RESEND_FROM || "nova.ai <onboarding@resend.dev>",
       to: [email],
       subject: "Verify your email - nova.ai",
       react: OTPSendTemplate({
