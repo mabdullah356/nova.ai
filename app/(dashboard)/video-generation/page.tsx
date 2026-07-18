@@ -56,7 +56,7 @@ const VideoGeneration = () => {
   };
 
   return (
-    <main className="relative h-full">
+    <main className="relative h-full max-h-screen">
       <div className="h-full overflow-y-auto px-4 md:px-8 py-6 pb-24">
         {messages.length === 0 ? (
           <div className="flex h-full flex-col items-center justify-center gap-4 text-center">
