@@ -226,7 +226,7 @@ async function generateSlideContent(topic: string, slideCount: number, tone: str
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      model: "tencent/hy3:free",
+      model: "openrouter/free",
       messages: [
         { role: "system", content: SYSTEM_PROMPT },
         {
