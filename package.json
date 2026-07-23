@@ -51,5 +51,10 @@
   "trustedDependencies": [
     "sharp",
     "unrs-resolver"
-  ]
+  ],
+  "overrides": {
+    "next-auth": {
+      "uuid": "^11.1.0"
+    }
+  }
 }
