@@ -3,10 +3,7 @@
 import { useEffect, useRef, useState, useCallback, use } from "react";
 import { useRouter } from "next/navigation";
 
-import { MdOutlineMarkEmailRead } from "react-icons/md";
-import { IoReloadSharp } from "react-icons/io5";
-import { RiErrorWarningLine } from "react-icons/ri";
-import { FiCheckCircle } from "react-icons/fi";
+import { MailCheck, RefreshCw, AlertTriangle, CheckCircle } from "lucide-react";
 
 interface PageProps {
   params: Promise<{ email: string }>;
@@ -178,7 +175,7 @@ export default function VerifyAccountPage({ params }: PageProps) {
         <div className="bg-black border border-zinc-800 rounded-xl px-8 py-10 shadow-sm">
           <div className="flex flex-col items-center mb-6">
             <div className="bg-white/5 rounded-full p-4 mb-4">
-              <MdOutlineMarkEmailRead className="text-3xl text-zinc-400" />
+              <MailCheck className="w-8 h-8 text-zinc-400" />
             </div>
             <h1 className="text-xl font-semibold text-white tracking-tight">
               Enter confirmation code
@@ -224,14 +221,14 @@ export default function VerifyAccountPage({ params }: PageProps) {
 
           {errorMsg && (
             <div className="flex items-center gap-2 bg-red-500/10 border border-red-500/20 rounded-lg px-3 py-2 mb-4">
-              <RiErrorWarningLine className="text-red-500 text-base shrink-0" />
+              <AlertTriangle className="w-4 h-4 text-red-500 shrink-0" />
               <p className="text-xs text-red-400">{errorMsg}</p>
             </div>
           )}
 
           {status === "success" && successMsg && (
             <div className="flex items-center gap-2 bg-green-500/10 border border-green-500/20 rounded-lg px-3 py-2 mb-4">
-              <FiCheckCircle className="text-green-500 text-base shrink-0" />
+              <CheckCircle className="w-4 h-4 text-green-500 shrink-0" />
               <p className="text-xs text-green-400">{successMsg}</p>
             </div>
           )}
@@ -260,7 +257,7 @@ export default function VerifyAccountPage({ params }: PageProps) {
                 disabled={resendStatus === "loading"}
                 className="flex items-center gap-1.5 text-sm text-blue-500 hover:text-blue-400 font-medium transition-colors"
               >
-                <IoReloadSharp
+                <RefreshCw
                   className={resendStatus === "loading" ? "animate-spin" : ""}
                 />
                 {resendStatus === "loading" ? "Sending..." : "Resend code"}
