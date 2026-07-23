@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import axios from "axios";
 import { useRouter } from "next/navigation";
@@ -8,6 +8,14 @@ import { Shield, ArrowRight, Loader2, CheckCircle2 } from "lucide-react";
 import Link from "next/link";
 
 export default function VerifyAccount() {
+  return (
+    <Suspense fallback={<div className="flex min-h-[calc(100vh-4rem)] items-center justify-center bg-white"><Loader2 className="h-6 w-6 animate-spin text-purple-600" /></div>}>
+      <VerifyAccountInner />
+    </Suspense>
+  );
+}
+
+function VerifyAccountInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const email = searchParams.get("email") || "";

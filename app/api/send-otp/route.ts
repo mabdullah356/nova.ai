@@ -1,3 +1,4 @@
+import React from "react";
 import { OTPSendTemplate } from "../../../components/email-template/OTPSend";
 import { Resend } from "resend";
 import { NextRequest, NextResponse } from "next/server";
@@ -39,11 +40,7 @@ export async function POST(req: NextRequest) {
       from: process.env.RESEND_FROM || "nova.ai <onboarding@resend.dev>",
       to: [email],
       subject: "Verify your email - nova.ai",
-      react: OTPSendTemplate({
-        name: user.name,
-        otp,
-        expiryMinutes: OTP_EXPIRY_MINUTES,
-      }),
+      react: React.createElement(OTPSendTemplate, { name: user.name, otp, expiryMinutes: OTP_EXPIRY_MINUTES }),
     });
 
     if (error) {

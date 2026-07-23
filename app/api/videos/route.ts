@@ -26,7 +26,7 @@ async function generateWithGemini(prompt: string): Promise<string> {
     }
 
     if (!result.done) throw new Error("Video generation timed out");
-    if (result.error) throw new Error(result.error.message || "Video generation failed");
+    if (result.error) throw new Error("Video generation failed");
 
     const video = result.response?.generatedVideos?.[0]?.video;
     if (!video?.uri) throw new Error("No video generated");

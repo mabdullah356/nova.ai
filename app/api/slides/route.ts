@@ -530,7 +530,7 @@ export async function POST(req: Request) {
       }
     }
 
-    const buffer = await pptx.write({ outputType: "arraybuffer" });
+    const buffer = await pptx.write({ outputType: "arraybuffer" }) as ArrayBuffer;
 
     return new NextResponse(buffer, {
       status: 200,
