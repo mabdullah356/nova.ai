@@ -47,8 +47,9 @@ const VideoGeneration = () => {
         };
         setMessages((prev) => [...prev, assistantMsg]);
       }
-    } catch {
-      const errorMsg: Message = { id: crypto.randomUUID(), role: "assistant", content: "Failed to generate video." };
+    } catch (err: any) {
+      const msg = err?.response?.data?.message || "Failed to generate video.";
+      const errorMsg: Message = { id: crypto.randomUUID(), role: "assistant", content: msg };
       setMessages((prev) => [...prev, errorMsg]);
     } finally {
       setIsLoading(false);
